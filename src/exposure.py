@@ -1,8 +1,11 @@
-pounds_held = 1000000
+pounds_held = 500000
 previous_exchange_rate = 1.25
 current_exchange_rate = 1.23
-previous_usd_value = pounds_held * previous_exchange_rate
-current_usd_value = pounds_held * current_exchange_rate
+
+def calculate_usd_value(gbp_amount, exchange_rate):
+    return gbp_amount * exchange_rate
+previous_usd_value = calculate_usd_value(pounds_held, previous_exchange_rate)
+current_usd_value = calculate_usd_value(pounds_held, current_exchange_rate)
 usd_pnl = current_usd_value - previous_usd_value
 
 print('previous USD value:', previous_usd_value)
