@@ -14,6 +14,11 @@ loss_test_actual = calculate_usd_pnl(200000, 195000)
 loss_test_expected = -5000
 loss_test_passed = loss_test_actual == loss_test_expected
 
+def is_var_breach (pnl, var_threshold):
+    return pnl < -var_threshold
+loss_above_threshold = is_var_breach(-12000, 10000)
+
+
 print('previous USD value:', previous_usd_value)
 print('current USD value:', current_usd_value)
 print('USD P&L:', usd_pnl)
@@ -23,3 +28,4 @@ if loss_test_passed:
     print('loss test passed')
 else:
     print('loss test failed')
+print('loss exceeds VaR threshold', loss_above_threshold)
