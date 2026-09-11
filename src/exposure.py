@@ -1,6 +1,7 @@
 pounds_held = 500000
 previous_exchange_rate = 1.25
 current_exchange_rate = 1.23
+var_threshold_usd = 10000
 
 def calculate_usd_value(gbp_amount, exchange_rate):
     return gbp_amount * exchange_rate
@@ -16,7 +17,7 @@ loss_test_passed = loss_test_actual == loss_test_expected
 
 def is_var_breach (pnl, var_threshold):
     return pnl < -var_threshold
-loss_above_threshold = is_var_breach(-12000, 10000)
+loss_above_threshold = is_var_breach(usd_pnl, var_threshold_usd)
 
 
 print('previous USD value:', previous_usd_value)
@@ -29,3 +30,4 @@ if loss_test_passed:
 else:
     print('loss test failed')
 print('loss exceeds VaR threshold', loss_above_threshold)
+print('USD VaR threshold:', var_threshold_usd)
