@@ -4,6 +4,7 @@ import math
 exchange_rates = []
 numeric_rates = []
 dated_rates = []
+seen_dates = []
 
 with open ('data/raw/gbpusd_daily.csv', newline='') as file:
     reader = csv.reader(file)
@@ -12,6 +13,7 @@ with open ('data/raw/gbpusd_daily.csv', newline='') as file:
     missing_rate_count = 0
     non_missing_rate_count = 0
     invalid_rate_count = 0
+    
 
     for row in reader:
         exchange_rate = row[1]
@@ -29,6 +31,16 @@ with open ('data/raw/gbpusd_daily.csv', newline='') as file:
             else:
                 dated_rate = [row[0], numeric_rate]
                 dated_rates.append(dated_rate)
+duplicate_date_count = 0
+for observation in dated_rates:
+    date = observation[0]
+    if date in seen_dates:
+        duplicate_date_count = duplicate_date_count + 1
+        print('duplicate date:', date)
+    else:
+        seen_dates.append(date)
+
+
 
 number_of_rows = len(exchange_rates)
 count_check = number_of_rows == missing_rate_count + non_missing_rate_count
@@ -50,3 +62,4 @@ else:
 print('invalid rate count:', invalid_rate_count)
 print('first observation:', dated_rates[0])
 print('number of dated observations:', dated_observaation_count)
+print('duplicate date count:', duplicate_date_count)
