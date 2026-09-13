@@ -5,6 +5,7 @@ exchange_rates = []
 numeric_rates = []
 dated_rates = []
 seen_dates = []
+dated_returns = []
 
 with open ('data/raw/gbpusd_daily.csv', newline='') as file:
     reader = csv.reader(file)
@@ -47,18 +48,24 @@ count_check = number_of_rows == missing_rate_count + non_missing_rate_count
 number_numeric_rates = len(numeric_rates)
 dated_observaation_count = len(dated_rates)
 
-previous_observation = dated_rates[0]
-current_observation = dated_rates[1]
-previous_date = previous_observation[0]
-previous_rate = previous_observation[1]
-current_date = current_observation[0]
-current_rate = current_observation[1]                   
+for index in range(1, len(dated_rates)):
+    previous_observation = dated_rates[index - 1]
+    current_observation = dated_rates[index]
 
-if current_date > previous_date:
-    daily_return = current_rate / previous_rate - 1
-    print('return %:', daily_return * 100)
-else:
-    print('dates are not in ascending order')
+    previous_date = previous_observation[0]
+    previous_rate = previous_observation[1]
+
+    current_date = current_observation[0]
+    current_rate = current_observation[1]
+
+    if current_date > previous_date:
+        daily_return = current_rate / previous_rate - 1
+        dated_returns.append([previous_date, current_date, daily_return])
+    else:
+        raise ValueError('dates are not in ascending order')
+
+print('number of returns:', len(dated_returns))
+print('first return:', dated_returns[0])
 
 print('number of rows:', number_of_rows)
 print('missing rate count:', missing_rate_count)
