@@ -70,6 +70,11 @@ for observation in dated_returns:
     if observation[2] < worst_observation[2]:
         worst_observation = observation
 
+with open('data/processed/gbpusd_returns.csv', 'w', newline='') as file:
+    writer = csv.writer(file)
+    writer.writerow(['previous_date', 'current_date', 'return'])
+    writer.writerows(dated_returns)
+    
 print('largest fall started:', worst_observation[0])
 print('largest fall ended:', worst_observation[1])
 print('largest fall (%):', worst_observation[2] * 100)
