@@ -64,6 +64,16 @@ for index in range(1, len(dated_rates)):
     else:
         raise ValueError('dates are not in ascending order')
 
+worst_observation = dated_returns[0]
+
+for observation in dated_returns:
+    if observation[2] < worst_observation[2]:
+        worst_observation = observation
+
+print('largest fall started:', worst_observation[0])
+print('largest fall ended:', worst_observation[1])
+print('largest fall (%):', worst_observation[2] * 100)
+
 print('number of returns:', len(dated_returns))
 print('first return:', dated_returns[0])
 
