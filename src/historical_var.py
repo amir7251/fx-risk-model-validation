@@ -44,16 +44,21 @@ for result in backtest_results:
     end_date = result[1]
     year = end_date[:4]
     if year not in yearly_counts:
-        yearly_counts[year] = [0, 0]
+        yearly_counts[year] = [0, 0, 0]
     yearly_counts[year][0] = yearly_counts[year][0] + 1
 
     if result[4]:
         yearly_counts[year][1] = yearly_counts[year][1] + 1
 
+    if result[6]:
+        yearly_counts[year][2] = yearly_counts[year][2] + 1
+
 for year in yearly_counts:
     counts = yearly_counts[year]
     yearly_breach_rate = counts[1] / counts[0]
     print(year, 'breach rate (%):', yearly_breach_rate * 100)
+    yearly_breach_rate_99 = counts[2] / counts[0]
+    print(year, '99% breach rate (%):', yearly_breach_rate_99 * 100)
 
 breach_exceedances = []
 
