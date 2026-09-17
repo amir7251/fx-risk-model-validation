@@ -53,6 +53,15 @@ for year in yearly_counts:
     yearly_breach_rate = counts[1] / counts[0]
     print(year, 'breach rate (%):', yearly_breach_rate * 100)
 
+breach_exceedances = []
+
+for result in backtest_results:
+    if result[4]:
+        exceedance = result[2] - result[3]
+        breach_exceedances.append(exceedance)
+largest_exceedance = max(breach_exceedances)
+average_exceedance = sum(breach_exceedances) / len(breach_exceedances)
+
 print('window size:', len(historical_window))
 print('first observation in window:', historical_window[0])
 print('last observation in window;', historical_window[-1])
@@ -73,3 +82,5 @@ print('first backtest result:', backtest_results[0])
 print('number of breaches:', breach_count)
 print('breach rate (%):', breach_rate * 100)
 print('yearly counts:', yearly_counts)
+print('largest exceedance (percentage points):', largest_exceedance * 100)
+print('average exceedance (percentage points):', average_exceedance * 100)
