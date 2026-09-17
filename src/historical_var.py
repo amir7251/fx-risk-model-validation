@@ -36,6 +36,23 @@ for result in backtest_results:
 
 breach_rate = breach_count / len(backtest_results)
 
+yearly_counts = {}
+
+for result in backtest_results:
+    end_date = result[1]
+    year = end_date[:4]
+    if year not in yearly_counts:
+        yearly_counts[year] = [0, 0]
+    yearly_counts[year][0] = yearly_counts[year][0] + 1
+
+    if result[4]:
+        yearly_counts[year][1] = yearly_counts[year][1] + 1
+
+for year in yearly_counts:
+    counts = yearly_counts[year]
+    yearly_breach_rate = counts[1] / counts[0]
+    print(year, 'breach rate (%):', yearly_breach_rate * 100)
+
 print('window size:', len(historical_window))
 print('first observation in window:', historical_window[0])
 print('last observation in window;', historical_window[-1])
@@ -55,3 +72,4 @@ print('number of backtest results:', len(backtest_results))
 print('first backtest result:', backtest_results[0])
 print('number of breaches:', breach_count)
 print('breach rate (%):', breach_rate * 100)
+print('yearly counts:', yearly_counts)
