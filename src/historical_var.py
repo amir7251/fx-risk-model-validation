@@ -24,10 +24,12 @@ for index in range(500, len(dated_returns)):
         window_returns.append(observation[2])
     sorted_returns = sorted(window_returns)
     return_threshold = sorted_returns[24]
+    return_threshold_99 = sorted_returns[4]
     next_observation = dated_returns[index]
     actual_return = next_observation[2]
     breach = actual_return < return_threshold
-    backtest_results.append([next_observation[0], next_observation[1], return_threshold, actual_return, breach])
+    breach_99 = actual_return < return_threshold_99
+    backtest_results.append([next_observation[0], next_observation[1], return_threshold, actual_return, breach, return_threshold_99, breach_99])
 
 breach_count = 0
 for result in backtest_results:
@@ -62,6 +64,12 @@ for result in backtest_results:
 largest_exceedance = max(breach_exceedances)
 average_exceedance = sum(breach_exceedances) / len(breach_exceedances)
 
+breach_count_99 = 0
+for result in backtest_results:
+    if result[6]:
+        breach_count_99 = breach_count_99 + 1
+breach_rate_99 = breach_count_99 / len(backtest_results)
+
 print('window size:', len(historical_window))
 print('first observation in window:', historical_window[0])
 print('last observation in window;', historical_window[-1])
@@ -84,3 +92,5 @@ print('breach rate (%):', breach_rate * 100)
 print('yearly counts:', yearly_counts)
 print('largest exceedance (percentage points):', largest_exceedance * 100)
 print('average exceedance (percentage points):', average_exceedance * 100)
+print('number of 99% breaches:', breach_count_99)
+print('99% breach rate (%):', breach_rate_99 * 100)
