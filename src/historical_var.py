@@ -29,8 +29,12 @@ for index in range(500, len(dated_returns)):
     breach = actual_return < return_threshold
     backtest_results.append([next_observation[0], next_observation[1], return_threshold, actual_return, breach])
 
-        
+breach_count = 0
+for result in backtest_results:
+    if result[4]:
+        breach_count = breach_count + 1
 
+breach_rate = breach_count / len(backtest_results)
 
 print('window size:', len(historical_window))
 print('first observation in window:', historical_window[0])
@@ -49,3 +53,5 @@ print('number of returns:', len(dated_returns))
 print('first return:', dated_returns[0])
 print('number of backtest results:', len(backtest_results))
 print('first backtest result:', backtest_results[0])
+print('number of breaches:', breach_count)
+print('breach rate (%):', breach_rate * 100)
