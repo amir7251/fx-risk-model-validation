@@ -53,6 +53,17 @@ for index in range(500, len(standardised_returns)):
     breach_99 = actual_return < return_threshold_99
     filtered_backtest_results.append([next_observation[0], next_observation[1], return_threshold_95, actual_return, breach_95, return_threshold_99, breach_99])
 
+filtered_breach_count_95 = 0
+filtered_breach_count_99 = 0
+
+for result in filtered_backtest_results:
+    if result[4]:
+        filtered_breach_count_95 = filtered_breach_count_95 + 1
+    if result[6]:
+        filtered_breach_count_99 = filtered_breach_count_99 + 1
+filtered_breach_rate_95 = filtered_breach_count_95 / len(filtered_backtest_results)
+filtered_breach_rate_99 = filtered_breach_count_99 / len(filtered_backtest_results)
+
 print('number of returns:', len(dated_returns))
 print('initial variance:', initial_variance)
 print('initial volatility (%):', initial_volatility * 100)
@@ -61,3 +72,7 @@ print('first standardised return:', standardised_returns[0])
 print('number of filtered backtest results:', len(filtered_backtest_results))
 print('first filtered result:', filtered_backtest_results[0])
 print('last filtered result:', filtered_backtest_results[-1])
+print('filtered 95% breach count:', filtered_breach_count_95)
+print('filtered 95% breach rate (%):', filtered_breach_rate_95 * 100)
+print('filtered 99% breach count:', filtered_breach_count_99)
+print('filtered 99% brach rate (%):', filtered_breach_rate_99 * 100)
