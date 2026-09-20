@@ -117,3 +117,60 @@ for year in historical_yearly_counts:
     print(year, 'filtered 95% breach rate (%):', filtered_rate_95)
     print(year, 'historical 99% breach rate (%):', historical_rate_99)
     print(year, 'filtered 99% breach rate (%):', filtered_rate_99)
+
+historical_exceedances_95 = []
+
+for result in matched_historical_results:
+    if result[4] == 'True':
+        threshold = float(result[2])
+        actual_return = float(result[3])
+        exceedance = threshold - actual_return
+        historical_exceedances_95.append(exceedance)
+
+historical_average_exceedance_95 = (sum(historical_exceedances_95) / len(historical_exceedances_95))
+historical_largest_exceedance_95 = max(historical_exceedances_95)
+
+filtered_exceedances_95 = []
+
+for result in filtered_results:
+    if result[4] == 'True':
+        threshold = float(result[2])
+        actual_return = float(result[3])
+        exceedance = threshold - actual_return
+        filtered_exceedances_95.append(exceedance)
+
+filtered_average_exceedance_95 = (sum(filtered_exceedances_95) / len(filtered_exceedances_95))
+filtered_largest_exceedance_95 = max(filtered_exceedances_95)
+
+historical_exceedances_99 = []
+
+for result in matched_historical_results:
+    if result[6] == 'True':
+        threshold = float(result[5])
+        actual_return = float(result[3])
+        exceedance = threshold - actual_return
+        historical_exceedances_99.append(exceedance)
+
+historical_average_exceedance_99 = (sum(historical_exceedances_99) / len(historical_exceedances_99))
+historical_largest_exceedance_99 = max(historical_exceedances_99)
+
+filtered_exceedances_99 = []
+
+for result in filtered_results:
+    if result[6] == 'True':
+        threshold = float(result[5])
+        actual_return = float(result[3])
+        exceedance = threshold - actual_return
+        filtered_exceedances_99.append(exceedance)
+
+filtered_average_exceedance_99 = (sum(filtered_exceedances_99) / len(filtered_exceedances_99))
+filtered_largest_exceedance_99 = max(filtered_exceedances_99)
+
+print('historical 95% average exceedance (percentage points):', historical_average_exceedance_95 * 100)
+print('historical 95% largest exceedance (percentage points):', historical_largest_exceedance_95 * 100)
+print('filtered 95% average exceedance (percentage points):', filtered_average_exceedance_95 * 100)
+print('filtered 95% largest exceedance (percentage points):', filtered_largest_exceedance_95 * 100)
+print('historical 99% average exceedance (percentage points):', historical_average_exceedance_99 * 100)
+print('historical 99% largest exceedance (percentage points):', historical_largest_exceedance_99 * 100)
+print('filtered 99% average exceedance (percentage points):', filtered_average_exceedance_99 * 100)
+print('filtered 99% largest exceedance (percentage points):', filtered_largest_exceedance_99 * 100)
