@@ -166,6 +166,39 @@ for result in filtered_results:
 filtered_average_exceedance_99 = (sum(filtered_exceedances_99) / len(filtered_exceedances_99))
 filtered_largest_exceedance_99 = max(filtered_exceedances_99)
 
+historical_consecutive_breaches_95 = 0
+
+for index in range(1, len(matched_historical_results)):
+    previous_result = matched_historical_results[index - 1]
+    current_result = matched_historical_results[index]
+    if previous_result[4] == 'True' and current_result[4] == 'True':
+        historical_consecutive_breaches_95 += 1
+
+filtered_consecutive_breaches_95 = 0
+
+for index in range(1, len(filtered_results)):
+    previous_result = filtered_results[index - 1]
+    current_result = filtered_results[index]
+
+    if previous_result[4] == 'True' and current_result[4] == 'True':
+        filtered_consecutive_breaches_95 += 1
+
+historical_previous_breaches_95 = 0
+
+for result in matched_historical_results[:-1]:
+    if result[4] == 'True':
+        historical_previous_breaches_95 += 1
+
+historical_repeat_breach_rate_95 = (historical_consecutive_breaches_95 / historical_previous_breaches_95 * 100)
+
+filtered_previous_breaches_95 = 0
+
+for result in filtered_results[:-1]:
+    if result[4] == 'True':
+        filtered_previous_breaches_95 += 1
+
+filtered_repeat_breach_rate_95 = (filtered_consecutive_breaches_95 / filtered_previous_breaches_95 * 100)
+
 print('historical 95% average exceedance (percentage points):', historical_average_exceedance_95 * 100)
 print('historical 95% largest exceedance (percentage points):', historical_largest_exceedance_95 * 100)
 print('filtered 95% average exceedance (percentage points):', filtered_average_exceedance_95 * 100)
@@ -174,3 +207,7 @@ print('historical 99% average exceedance (percentage points):', historical_avera
 print('historical 99% largest exceedance (percentage points):', historical_largest_exceedance_99 * 100)
 print('filtered 99% average exceedance (percentage points):', filtered_average_exceedance_99 * 100)
 print('filtered 99% largest exceedance (percentage points):', filtered_largest_exceedance_99 * 100)
+print('historical consecutive 95% breach pairs:', historical_consecutive_breaches_95)
+print('filtered consecutive 95% breach pairs:', filtered_consecutive_breaches_95)
+print('historical breach rate after a breach (%):', historical_repeat_breach_rate_95)
+print('filtered breach rate after a breach (%):', filtered_repeat_breach_rate_95)
