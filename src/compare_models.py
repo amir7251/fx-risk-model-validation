@@ -1,4 +1,21 @@
 import csv
+import math
+from scipy.stats import chi2
+
+def kupiec_p_value(prediction_count, breach_count, expected_probability):
+    observed_probability = breach_count / prediction_count
+    non_breach_count = prediction_count - breach_count
+
+    expected_log = (breach_count * math.log(expected_probability) + non_breach_count * math.log(1 - expected_probability))
+
+    observed_log = 0
+    if breach_count > 0:
+        observed_log += breach_count * math.log(observed_probability)
+    if non_breach_count > 0:
+        observed_log += non_breach_count * math.log(1 - observed_probability)
+
+    statistic = 2 * (observed_log - expected_log)
+    return chi2.sf(statistic, 1)
 
 historical_results = []
 
@@ -199,6 +216,20 @@ for result in filtered_results[:-1]:
 
 filtered_repeat_breach_rate_95 = (filtered_consecutive_breaches_95 / filtered_previous_breaches_95 * 100)
 
+prediction_count = len(matched_historical_results)
+breach_count = historical_breach_count_95
+expected_probability = 0.05
+observed_probability = breach_count / prediction_count
+
+expected_log_likelihood = (breach_count * math.log(expected_probability) + (prediction_count - breach_count) * math.log(1 - expected_probability))
+observed_log_likelihood = (breach_count * math.log(observed_probability) + (prediction_count - breach_count) * math.log(1 - observed_probability))
+kupiec_statistic = 2 * (observed_log_likelihood - expected_log_likelihood)
+historical_p_value_95 = chi2.sf(kupiec_statistic, 1)
+
+filtered_p_value_95 = kupiec_p_value(len(filtered_results), filtered_breach_count_95, 0.05)
+historical_p_value_99 = kupiec_p_value(len(matched_historical_results), historical_breach_count_99, 0.01)
+filtered_p_value_99 = kupiec_p_value(len(filtered_results), filtered_breach_count_99, 0.01)
+
 print('historical 95% average exceedance (percentage points):', historical_average_exceedance_95 * 100)
 print('historical 95% largest exceedance (percentage points):', historical_largest_exceedance_95 * 100)
 print('filtered 95% average exceedance (percentage points):', filtered_average_exceedance_95 * 100)
@@ -211,3 +242,7 @@ print('historical consecutive 95% breach pairs:', historical_consecutive_breache
 print('filtered consecutive 95% breach pairs:', filtered_consecutive_breaches_95)
 print('historical breach rate after a breach (%):', historical_repeat_breach_rate_95)
 print('filtered breach rate after a breach (%):', filtered_repeat_breach_rate_95)
+print('historical 95% Kupiec statistic:', kupiec_statistic)
+print('filtered 95% Kupiec p-value:', filtered_p_value_95)
+print('historical 99% Kupiec p-value:', historical_p_value_99)
+print('filtered 99% Kupiec p-value:', filtered_p_value_99)
