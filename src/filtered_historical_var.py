@@ -76,3 +76,11 @@ print('filtered 95% breach count:', filtered_breach_count_95)
 print('filtered 95% breach rate (%):', filtered_breach_rate_95 * 100)
 print('filtered 99% breach count:', filtered_breach_count_99)
 print('filtered 99% brach rate (%):', filtered_breach_rate_99 * 100)
+
+with open('data/processed/filtered_var_backtest.csv', 'w', newline='') as file:
+    writer = csv.writer(file)
+    writer.writerow([
+        'previous_date', 'current_date', 'threshold_95',
+        'actual_return', 'breach_95', 'threshold_99', 'breach_99'
+    ])
+    writer.writerows(filtered_backtest_results)

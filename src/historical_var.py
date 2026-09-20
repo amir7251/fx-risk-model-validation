@@ -99,3 +99,9 @@ print('largest exceedance (percentage points):', largest_exceedance * 100)
 print('average exceedance (percentage points):', average_exceedance * 100)
 print('number of 99% breaches:', breach_count_99)
 print('99% breach rate (%):', breach_rate_99 * 100)
+
+with open('data/processed/historical_var_backtest.csv', 'w', newline='') as file:
+    writer = csv.writer(file)
+    writer.writerow(['previous_date', 'current_date', 'threshold_95', 'actual_return', 'breach_95', 'threshold_99', 'breach_99'])
+    writer.writerows(backtest_results)
+       
