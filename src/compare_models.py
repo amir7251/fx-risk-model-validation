@@ -1,6 +1,7 @@
 import csv
 import math
 from scipy.stats import chi2
+import matplotlib.pyplot as plt
 
 def kupiec_p_value(prediction_count, breach_count, expected_probability):
     observed_probability = breach_count / prediction_count
@@ -229,6 +230,56 @@ historical_p_value_95 = chi2.sf(kupiec_statistic, 1)
 filtered_p_value_95 = kupiec_p_value(len(filtered_results), filtered_breach_count_95, 0.05)
 historical_p_value_99 = kupiec_p_value(len(matched_historical_results), historical_breach_count_99, 0.01)
 filtered_p_value_99 = kupiec_p_value(len(filtered_results), filtered_breach_count_99, 0.01)
+
+chart_years = []
+historical_chart_rates_95 = []
+filtered_chart_rates_95 = []
+historical_chart_rates_99 = []
+filtered_chart_rates_99 = []
+
+for year in historical_yearly_counts:
+    if year == '2008':
+        continue
+
+    chart_years.append(int(year))
+
+    historical_counts = historical_yearly_counts[year]
+    filtered_counts = filtered_yearly_counts[year]
+
+    historical_chart_rates_95.append(historical_counts[1] / historical_counts[0] * 100)
+    filtered_chart_rates_95.append(filtered_counts[1] / filtered_counts[0] * 100)
+
+    historical_chart_rates_99.append(historical_counts[2] / historical_counts[0] * 100)
+    filtered_chart_rates_99.append(filtered_counts[2] / filtered_counts[0] * 100)
+
+plt.figure(figsize=(10, 5))
+
+plt.plot(chart_years, historical_chart_rates_95, label='Historical')
+plt.plot(chart_years, filtered_chart_rates_95, label='Filtered')
+plt.axhline(y=5, color='black', linestyle='--', label='Expected: 5%')
+
+plt.title('Annual 95% VaR breach rates, 2009–2025')
+plt.xlabel('Year')
+plt.ylabel('Breach rate (%)')
+plt.legend()
+plt.tight_layout()
+plt.savefig('reports/figures/annual_breach_rates_95.png', dpi=200)
+plt.show()
+
+
+plt.figure(figsize=(10, 5))
+
+plt.plot(chart_years, historical_chart_rates_99, label='Historical')
+plt.plot(chart_years, filtered_chart_rates_99, label='Filtered')
+plt.axhline(y=1, color='black', linestyle='--', label='Expected: 1%')
+
+plt.title('Annual 99% VaR breach rates, 2009–2025')
+plt.xlabel('Year')
+plt.ylabel('Breach rate (%)')
+plt.legend()
+plt.tight_layout()
+plt.savefig('reports/figures/annual_breach_rates_99.png', dpi=200)
+plt.show()
 
 print('historical 95% average exceedance (percentage points):', historical_average_exceedance_95 * 100)
 print('historical 95% largest exceedance (percentage points):', historical_largest_exceedance_95 * 100)
