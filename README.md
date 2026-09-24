@@ -24,9 +24,13 @@ The filtered model’s overall breach rates were closer to the expected levels. 
 
 ## Performance across years
 
-![Annual 95% VaR breach rates](reports/figures/annual_breach_rates_95.png)
+![Annual 95% VaR breach rates]
+<img width="897" height="447" alt="image" src="https://github.com/user-attachments/assets/9a237234-1ce9-47d9-a39e-e5570fa90611" />
 
-![Annual 99% VaR breach rates](reports/figures/annual_breach_rates_99.png)
+
+![Annual 99% VaR breach rates]
+<img width="933" height="501" alt="image" src="https://github.com/user-attachments/assets/e476bc49-05ae-4364-a66b-92ff0ec123e4" />
+
 
 The annual results show that neither model performed consistently across the whole period. At 99% VaR, filtering reduced the breach rate from **3.98% to 1.20% in 2016**, but increased it from **0.80% to 2.39% in 2024**.
 
